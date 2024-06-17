@@ -208,7 +208,7 @@ int main()
     printf("length of domain name: %d\n", domain_name_length);
 
     offset = domain_name_length + 2 + 13 + 14;
-    unsigned short data_count2 = 0;
+    data_count = 0;
     printf("offset before search = %d\n", offset);
     printf("data[offset] before search = %d\n", data[offset]);
 
@@ -218,9 +218,14 @@ int main()
       while (data[offset] != 0) {
         int tmp = data[offset];
         if (data[tmp + offset + 2] == 0 && data[tmp + offset + 3] == 2) {
-          printf("we are leaving anwsers\n");
+          printf("we are leaving anwsers into auth\n");
           in_auth = 1;
           break;
+        } else if (data[tmp + offset + 3] == 41) {
+          printf("we are leaving anwsers into add_rec\n");
+          in_add_rec = 1;
+          break;
+
         }
         offset += tmp + 12;
         printf("offset during search = %d\n", offset);
@@ -229,7 +234,7 @@ int main()
       }
     }
     else {
-      data_count2 = offset + 1;
+      data_count = offset + 1;
     }
     if (in_auth == 1) {
       int tmp = data[offset];
@@ -251,7 +256,7 @@ int main()
     }
     if (in_add_rec == 1) {
       int tmp = data[offset];
-      offset += tmp + 12; 
+      offset += tmp + 11; 
       printf("offset in add_rec = %d\n", offset);
       printf("data[offset] in add_rec = %d\n", data[offset]);
       while (data[offset] != 0) {
@@ -265,26 +270,26 @@ int main()
         printf("offset in add_rec = %d\n", offset);
         printf("data[offset] in add_rec = %d\n", data[offset]);
       }
-      offset += tmp;
+      // offset += tmp;
     }
     else {
       offset -= 11;
     }
-    data_count2 = offset; 
+    data_count = offset + 1; 
 
     printf("offset = %d\n", offset);
     printf("data[offset] = %02X\n", (unsigned char)data[offset]);
-    printf("data_count2 = %d\n", data_count2);
+    printf("data_count = %d\n", data_count);
     printf("data = ");
 
     printf("data from %s = ", Inet_ntoa(client_addr.sin_addr));
 
-    char data_send2[data_count2];
-    for (int i = 0; i < data_count2; ++i) {
+    char data_send2[data_count];
+    for (int i = 0; i < data_count; ++i) {
       data_send2[i] = data[i];
       printf("%02X ", (unsigned char)data_send2[i]);
     }
-    printf("\nlength of response = %d\n", data_count2);
+    printf("\nlength of response = %d\n", data_count);
 
     struct sockaddr_in client_addr2 = {
       AF_INET,
@@ -295,16 +300,12 @@ int main()
     printf("sending response to %s:%d\n", inet_ntoa(client_addr2.sin_addr), 
            Htons(client_addr2.sin_port));
 
-    nbytes = Sendto(server_sockfd, data_send2, data_count2, 0, 
-                    (struct sockaddr* )&client_addr2, addrlen);
-    if (nbytes == -1) {
-        perror("sendto");
-        exit(EXIT_FAILURE);
-    }
+    Sendto(server_sockfd, data_send2, data_count, 0, 
+           (struct sockaddr* )&client_addr2, addrlen);
 
     memset(&data, 0, BUFF_SIZE);
     memset(&data_send, 0, data_count);
-    memset(&data_send2, 0, data_count2);
+    memset(&data_send2, 0, data_count);
     printf("--------------------------------\n\n");
   }
   
