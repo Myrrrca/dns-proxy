@@ -179,6 +179,9 @@ int main()
     }
     printf("\nlength of query = %d\n", data_count);
     int res = check_domain(data_send, config);
+    if (res) {
+      continue;
+    }
 
     int upstream_server_sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
     struct sockaddr_in upstream_server_addr = {
