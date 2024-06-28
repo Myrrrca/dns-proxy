@@ -44,14 +44,15 @@ static int handler(void* proxy, const char* section, const char* name,
 }
 
 int getdomain(char* data, char* domain_name) {
-  int isState = 0;
   int expected_length = 0;
   int counter = 0;
-  int i;
   int labels = 1;
+  int i = 0;
 
-  for (i = 0; data[i] != 0; ++i) {
-    if (isState == 1) {
+  expected_length = data[i];
+  // printf("expected_length = %d\n", data[i]);
+
+  for (int i = 1; data[i] != 0; ++i) {
       if (expected_length <= 0) {
         expected_length = data[i];
         domain_name[counter] = '.';
@@ -64,12 +65,6 @@ int getdomain(char* data, char* domain_name) {
       ++counter;
       --expected_length;
       // printf("now reading %c\n", data[i]);
-    }
-    else {
-      isState = 1;
-      expected_length = data[i];
-      // printf("expected_length = %d\n", data[i]);
-    }
   }
   // printf("domain name after reading: %s\n", domain_name);
   return labels;
@@ -309,6 +304,7 @@ int main()
     memset(&data, 0, BUFF_SIZE);
     memset(&data_send, 0, data_count);
     memset(&data_send2, 0, data_count);
+    printf("waiting for new dns query...\n");
     printf("--------------------------------\n\n");
   }
   
