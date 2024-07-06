@@ -4,8 +4,8 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
-#include "./lib/inih/ini.h"
-#include "./lib/errproc/errproc.h"
+#include "../lib/inih/ini.h"
+#include "../lib/errproc/errproc.h"
 
 #define BUFF_SIZE 512
 #define MAX_DOMAINS 2048
