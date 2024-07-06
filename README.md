@@ -23,8 +23,8 @@ This is a DNS proxy server equipped with a domain blacklist feature to filter un
    - `git clone https://github.com/Myrrrca/dns-proxy`
 2. Configure your `config.ini` file following the guidelines under "Configuration" and save it.
 3. Use the Makefile commands to build the executable:
-   - `make proxy` (to build)
-   - `make clean` (to remove the executable)
+   - `make` (to build)
+   - `make clean` (to remove all obj files and the executable)
 4. Once built successfully, run the following command:
    - `sudo ./proxy`
 
