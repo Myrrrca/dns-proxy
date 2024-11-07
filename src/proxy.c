@@ -128,6 +128,7 @@ static void create_and_bind_server_socket(int* server_sockfd, struct sockaddr_in
   Bind(*server_sockfd, (struct sockaddr* )server_addr, sizeof(struct sockaddr_in));
   printf("listening on port %d\n\n", Htons(server_addr->sin_port));
 }
+
 static void create_upstream_server_socket(int* upstream_server_sockfd, 
                           struct sockaddr_in* upstream_server_addr, Config* config) {
   *upstream_server_sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
@@ -136,8 +137,6 @@ static void create_upstream_server_socket(int* upstream_server_sockfd,
 
   Inet_aton(config->ip, &(upstream_server_addr->sin_addr)); 
 }
-
-
 
 static void print_client_addr(uint16_t* client_port, char** client_ip, 
                               const struct sockaddr_in client_addr) {
