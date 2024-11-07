@@ -14,16 +14,16 @@ OBJ = $(patsubst $(PREF_SRC)%.c, $(PREF_OBJ)%.o, $(filter $(PREF_SRC)%.c, $(SRC)
 .PHONY : clean
 
 $(TARGET) : $(OBJ) 
-	$(CC) $(OBJ) -Wall -o $(TARGET) 
+	$(CC) $(OBJ) -o $(TARGET) 
 
 $(PREF_OBJ)%.o : $(PREF_SRC)%.c
-	$(CC) -c -Wall $< -o $@
+	$(CC) -c $< -o $@
 
 $(PREF_OBJ)%.o : $(PREF_INIH)%.c
-	$(CC) -c -Wall $< -o $@
+	$(CC) -c $< -o $@
 
 $(PREF_OBJ)%.o : $(PREF_ERRPROC)%.c
-	$(CC) -c -Wall $< -o $@
+	$(CC) -c $< -o $@
 
 clean:
 	rm $(TARGET) $(PREF_OBJ)*.o 
