@@ -215,7 +215,7 @@ int main()
         perror("sendto");
         exit(EXIT_FAILURE);
     }
-    // ---------------------------
+    // query sent to upstream server
 
     memset(&data, 0, BUFF_SIZE);
     nbytes = Recvfrom(upstream_server_sockfd, &data, BUFF_SIZE, 0, 
@@ -300,7 +300,7 @@ int main()
     data_count = offset + 1; 
 
     printf("offset = %d\n", offset);
-    printf("data[offset] = %02X\n", (unsigned char)data[offset]);
+    printf("data[offset] = %02X\n", data[offset]);
     printf("data_count = %d\n", data_count);
     printf("data = ");
 
@@ -319,7 +319,7 @@ int main()
       0
     };
     Inet_aton(client_ip, &(client_addr2.sin_addr)); 
-    printf("sending response to %s:%d\n", inet_ntoa(client_addr2.sin_addr), 
+    printf("sending response to %s:%d\n", Inet_ntoa(client_addr2.sin_addr), 
            Htons(client_addr2.sin_port));
 
     Sendto(server_sockfd, data_send2, data_count, 0, 
