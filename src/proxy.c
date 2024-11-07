@@ -117,25 +117,25 @@ static void load_config(Config* config) {
   printf(" resolv_ip = %s\n----------------\n", config->resolv_ip);
 } 
 
-static void create_and_bind_server_socket(int* server_sockfd, struct sockaddr_in* server_addr,
-                          Config* config) {
+static void create_and_bind_server_socket(int* server_sockfd,
+                          struct sockaddr_in* server_addr, const Config config) {
   *server_sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
 
   server_addr->sin_family = AF_INET;
   server_addr->sin_port = Htons(53);
     
-  Inet_aton(config->resolv_ip, &(server_addr->sin_addr));
+  Inet_aton(config.resolv_ip, &(server_addr->sin_addr));
   Bind(*server_sockfd, (struct sockaddr* )server_addr, sizeof(struct sockaddr_in));
   printf("listening on port %d\n\n", Htons(server_addr->sin_port));
 }
 
 static void create_upstream_server_socket(int* upstream_server_sockfd, 
-                          struct sockaddr_in* upstream_server_addr, Config* config) {
+                      struct sockaddr_in* upstream_server_addr, const Config config) {
   *upstream_server_sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
   upstream_server_addr->sin_family = AF_INET;
   upstream_server_addr->sin_port = Htons(53);
 
-  Inet_aton(config->ip, &(upstream_server_addr->sin_addr)); 
+  Inet_aton(config.ip, &(upstream_server_addr->sin_addr)); 
 }
 
 static void print_client_addr(uint16_t* client_port, char** client_ip, 
@@ -157,7 +157,7 @@ int main()
 
   int server_sockfd;
   struct sockaddr_in server_addr;
-  create_and_bind_server_socket(&server_sockfd, &server_addr, &config);
+  create_and_bind_server_socket(&server_sockfd, &server_addr, config);
 
   struct sockaddr_in client_addr;
   unsigned char data[BUFF_SIZE] = {0};
@@ -207,7 +207,7 @@ int main()
     int upstream_server_sockfd;
     struct sockaddr_in upstream_server_addr;
     create_upstream_server_socket(&upstream_server_sockfd, &upstream_server_addr,
-                                  &config);
+                                  config);
 
     nbytes = Sendto(upstream_server_sockfd, data_send, data_count, 0, 
                     (struct sockaddr* )&upstream_server_addr, addrlen);
