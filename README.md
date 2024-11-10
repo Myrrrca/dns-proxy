@@ -32,5 +32,5 @@ This is a DNS proxy server equipped with a domain blacklist feature to filter un
 - This DNS proxy server does not utilize any third-party libraries or code except for the "inih" library for parsing `.ini` files (https://github.com/benhoyt/inih). This approach was chosen to gain a deeper understanding of DNS query and response mechanisms.
 - Since this proxy communicates exclusively via UDP packets, it does not handle TCP protocol redirection for requests or responses exceeding 512 bytes (in accordance with RFC 1035). This limitation may affect the server's performance under such conditions, which is outside the scope of this application's functionality.
 - The implementation of this proxy does not include multiplexing.
-- Please report any bugs or issues on the project's GitHub Issues page (https://github.com/Myrrrca/dns-proxy), providing details, including the domain name if applicable.
+- Please report any bugs or issues on the project's GitHub Issues page (https://github.com/Myrrrca/dns-proxy), providing details, including the domain name that failed if applicable.
 

@@ -1,29 +1,30 @@
+ifeq ($(origin CC), default)
+	CC = gcc
+endif
+
 TARGET = proxy
-CC = gcc
+CFLAGS ?= -O2
+COMMONINC = -I./lib/errproc -I./lib/ini -I./src
+OBJDIR_PREF = ./obj
 
-PREF_SRC = ./src/
-PREF_OBJ = ./obj/
-PREF_INIH = ./lib/inih/
-PREF_ERRPROC = ./lib/errproc/
+override CFLAGS += $(COMMONINC)
 
-SRC = $(wildcard $(PREF_SRC)*.c) $(wildcard $(PREF_INIH)*.c) $(wildcard $(PREF_ERRPROC)*.c)
-OBJ = $(patsubst $(PREF_SRC)%.c, $(PREF_OBJ)%.o, $(filter $(PREF_SRC)%.c, $(SRC))) \
-      $(patsubst $(PREF_INIH)%.c, $(PREF_OBJ)%.o, $(filter $(PREF_INIH)%.c, $(SRC))) \
-      $(patsubst $(PREF_ERRPROC)%.c, $(PREF_OBJ)%.o, $(filter $(PREF_ERRPROC)%.c, $(SRC)))
+CSRC = src/proxy.c src/config.c src/dns.c lib/ini/ini.c lib/errproc/errproc.c
+COBJ = $(addprefix $(OBJDIR_PREF)/, $(CSRC:.c=.o))
 
-.PHONY : clean
+.PHONY: all
+all : $(TARGET)
 
-$(TARGET) : $(OBJ) 
-	$(CC) $(OBJ) -o $(TARGET) 
+$(TARGET) : $(COBJ) 
+	$(CC) $^ -o $@ 
 
-$(PREF_OBJ)%.o : $(PREF_SRC)%.c
-	$(CC) -c $< -o $@
+$(COBJ) : $(OBJDIR_PREF)/%.o : %.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(PREF_OBJ)%.o : $(PREF_INIH)%.c
-	$(CC) -c $< -o $@
+.PHONY: clean
+clean :
+	rm -rf $(TARGET) $(COBJ)
 
-$(PREF_OBJ)%.o : $(PREF_ERRPROC)%.c
-	$(CC) -c $< -o $@
 
-clean:
-	rm $(TARGET) $(PREF_OBJ)*.o 
+
