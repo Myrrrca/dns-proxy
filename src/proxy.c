@@ -6,7 +6,6 @@
 
 #define BUFF_SIZE 512
 
-
 #include "errproc.h"
 #include "config.h"
 #include "dns.h"
