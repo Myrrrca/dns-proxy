@@ -56,7 +56,7 @@ void create_and_bind_server_socket(int* server_sockfd,
 
   // removing 'adress already in use' error on our port
   int yes = 1;
-  Setsockopt(server_sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+  Setsockopt(*server_sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 
   server_addr->sin_family = AF_INET;
   server_addr->sin_port = Htons(53);
