@@ -13,7 +13,6 @@
 int main() {
   Config config;
   load_config(&config);
-  fflush(stdout);
 
   int server_sockfd;
   struct sockaddr_in server_addr;
