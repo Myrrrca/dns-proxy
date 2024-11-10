@@ -18,7 +18,7 @@ This is a DNS proxy server equipped with a domain blacklist feature to filter un
 - If a domain name is found in the blacklist, the proxy server responds with the predefined response from the configuration file.
 
 #### Usage
-##### Before starting the proxy, ensure that any processes using port 53 on your machine are disabled using `sudo lsof -i :53` or similar commands.
+##### Before starting the proxy, ensure that any processes using port 53 on your machine are disabled using `sudo lsof -i :53` or similar commands. You can also remove all the processes on 5355 port if you want
 1. Clone the repository locally:
    - `git clone https://github.com/Myrrrca/dns-proxy`
 2. Configure your `config.ini` file following the guidelines under "Configuration" and save it.
