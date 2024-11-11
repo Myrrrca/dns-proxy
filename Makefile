@@ -3,7 +3,7 @@ ifeq ($(origin CC), default)
 endif
 
 TARGET = proxy
-CFLAGS ?= -O2
+# CFLAGS ?= -O2
 COMMONINC = -I./lib/errproc -I./lib/ini -I./src
 OBJDIR_PREF = ./obj
 

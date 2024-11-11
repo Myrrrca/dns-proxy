@@ -84,6 +84,8 @@ void print_client_addr(uint16_t* client_port, char** client_ip,
       exit(EXIT_FAILURE);
   }
   strcpy(*client_ip, Inet_ntoa(client_addr.sin_addr));
+  #if DUMP
   printf("Received packet from %s:%d\n", *client_ip, *client_port);
+  #endif
 }
 
